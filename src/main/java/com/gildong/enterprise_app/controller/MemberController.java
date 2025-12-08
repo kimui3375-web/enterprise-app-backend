@@ -24,6 +24,27 @@ public class MemberController {
     public MemberController(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
+    /**
+     * 새 회원 등록 폼 화면
+     *  - GET /members/new
+     */
+    @GetMapping("/new")
+    public String newForm() {
+        // /WEB-INF/views/member/newForm.jsp 를 렌더링
+        return "member/newForm";
+    }
+    /**
+     * 새 회원 등록 처리
+     *  - POST /members/new
+     */
+    @PostMapping("/new")
+    public String createMember(@ModelAttribute Member member) {
+        // 폼에서 넘어온 값으로 DB 저장
+        memberRepository.save(member);
+
+        // 저장 후 목록으로 리다이렉트
+        return "redirect:/members";
+    }
 
     /**
      * 회원 목록 페이지
