@@ -66,7 +66,7 @@
 </table>
 
 <div class="home-link">
-    <a href="/">메인 화면으로 돌아가기</a>
+    <a href="/members/${member.id}">
 </div>
 
 </body>

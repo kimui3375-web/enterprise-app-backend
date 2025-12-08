@@ -5,6 +5,7 @@ import com.gildong.enterprise_app.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -46,4 +47,20 @@ public class MemberController {
         //    (prefix + "member/list" + suffix)
         return "member/list";
     }
+    /**
+     * 회원 상세 페이지
+     *  - GET /members/{id}
+     *  - 예: /members/1
+     */
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 없습니다. id=" + id));
+
+        model.addAttribute("member", member);
+
+        return "member/detail"; // /WEB-INF/views/member/detail.jsp
+    }
 }
+
