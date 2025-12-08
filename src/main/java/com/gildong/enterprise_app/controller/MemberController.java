@@ -4,9 +4,7 @@ import com.gildong.enterprise_app.domain.Member;
 import com.gildong.enterprise_app.repository.MemberRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -61,6 +59,51 @@ public class MemberController {
         model.addAttribute("member", member);
 
         return "member/detail"; // /WEB-INF/views/member/detail.jsp
+    }
+
+    // src/main/java/com/gildong/enterprise_app/controller/MemberController.java
+
+    /**
+     * 회원 수정 폼 페이지
+     *  - GET /members/{id}/edit
+     */
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+
+        // 1) id로 회원 한 명 조회 (없으면 예외)
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 없습니다. id=" + id));
+
+        // 2) JSP에서 쓸 이름 "member"로 담기
+        model.addAttribute("member", member);
+
+        // 3) /WEB-INF/views/member/edit.jsp
+        return "member/edit";
+    }
+
+    /**
+     * 회원 수정 처리
+     *  - POST /members/{id}/edit
+     */
+    @PostMapping("/{id}/edit")
+    public String editSubmit(
+            @PathVariable Long id,
+            @ModelAttribute Member formMember) {
+
+        // 1) 기존 회원 조회
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 없습니다. id=" + id));
+
+        // 2) 수정할 필드만 덮어쓰기
+        member.setUsername(formMember.getUsername());
+        member.setName(formMember.getName());
+        member.setEmail(formMember.getEmail());
+
+        // 3) 저장 (JPA가 update 쿼리 날림)
+        memberRepository.save(member);
+
+        // 4) 다시 상세 페이지로 리다이렉트
+        return "redirect:/members/" + id;
     }
 }
 
