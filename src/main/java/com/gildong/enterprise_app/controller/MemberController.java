@@ -105,5 +105,17 @@ public class MemberController {
         // 4) 다시 상세 페이지로 리다이렉트
         return "redirect:/members/" + id;
     }
-}
+    /**
+     * 회원 삭제
+     *  - GET /members/{id}/delete
+     */
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
 
+        // 1) 해당 id 회원 삭제
+        memberRepository.deleteById(id);
+
+        // 2) 목록 페이지로 리다이렉트
+        return "redirect:/members";
+    }
+}
