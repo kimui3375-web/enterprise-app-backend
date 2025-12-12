@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -20,16 +19,16 @@ public class BoardService {
 
     /**
      * 게시글 전체 목록
-     *  - 최신 글이 위로 오도록 id 기준 내림차순 정렬
      */
+    @Transactional(readOnly = true)
     public List<Board> getBoards() {
         return boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
-        // 단순히 findAll()만 써도 되지만, 정렬을 여기서 통일해두면 편함
     }
 
     /**
      * 게시글 단건 조회
      */
+    @Transactional(readOnly = true)
     public Board getBoard(Long id) {
         return boardRepository.findById(id)
                 .orElseThrow(() ->
