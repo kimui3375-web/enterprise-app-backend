@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -27,9 +28,17 @@
 
 <div class="meta">
     작성자: <strong><c:out value="${board.writer}" /></strong><br/>
-    작성일: ${board.createdAt}<br/>
-    수정일: ${board.updatedAt}
+
+    <c:set var="createdStr" value="${board.createdAt}" />
+    <c:set var="updatedStr" value="${board.updatedAt}" />
+
+    작성일:
+    ${fn:substring(fn:replace(createdStr, 'T', ' '), 0, 16)}<br/>
+
+    수정일:
+    ${fn:substring(fn:replace(updatedStr, 'T', ' '), 0, 16)}
 </div>
+
 
 <div class="content-box">
     <c:out value="${board.content}" />

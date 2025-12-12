@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -51,7 +52,11 @@
                 </a>
             </td>
             <td><c:out value="${board.writer}" /></td>
-            <td>${board.createdAt}</td>
+            <td>
+                <c:set var="createdStr" value="${board.createdAt}" />
+                ${fn:substring(fn:replace(createdStr, 'T', ' '), 0, 16)}
+            </td>
+
         </tr>
     </c:forEach>
     </tbody>
